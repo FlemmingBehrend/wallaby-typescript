@@ -33,4 +33,31 @@ describe('calculator', () => {
         expect(cut.calculate('1,2\n3')).toBe(6);
     });
 
+    it('should support custom delimiters', () => {
+        expect(cut.calculate('//;\n1;2')).toBe(3);
+    });
+
+    it('should throw if called with negative number', () => {
+        try {
+            cut.calculate('-1');
+            fail('error should have been thrown');
+        } catch (err) {}
+    });
+
+    it('should display an error message with numbers that are wrong', () => {
+        try {
+            cut.calculate('-1,-2,-3');
+            fail('error should have been thrown');
+        } catch (err) {
+            expect(err).toBe('Negatives found: -1,-2,-3');
+        }
+    });
+
+    it('should ignore numbers above 1000', () => {
+        expect(cut.calculate('2,1001')).toBe(2);
+    });
+
+    it('should be able to handle custom delimiters of any length', () => {
+        expect(cut.calculate('//[%%]\n1%%2%%3')).toBe(6);
+    });
 });
